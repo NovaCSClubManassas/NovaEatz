@@ -4,14 +4,12 @@ PopulateCards()
 
 async function fetchAPI() {
   try {
-    const response = await fetch('puppet.json'); // Replace with your backend URL/endpoint
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const dbresponse = await response.json();
-    //console.log('Data from backend:', dbresponse)
+    // Get all documents from the "events" collection in Firestore
+    const querySnapshot = await window.getDocs(window.collection(window.db, 'events'));
+    
+    // Convert Firestore documents to an array of objects
+    const dbresponse = querySnapshot.docs.map(doc => doc.data());
+    
     return dbresponse;
   } catch (error) {
     console.error('Error fetching data:', error);

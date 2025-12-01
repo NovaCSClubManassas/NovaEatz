@@ -14,6 +14,7 @@
     <div class="form-container">
         <div class="form-header fade-in">
             <h2>Add New Event</h2>
+            <a href="index.html" style="text-decoration: none; color: #333; font-size: 16px; margin-top: 10px; display: inline-block;">← Back</a>
         </div>
         
         <form id="event-form" class="fade-in">
@@ -82,12 +83,79 @@
     </div>
     
     <script src="effects.js"></script>
-    <script>
-        document.getElementById('event-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Submit button is clickable but doesn't do anything yet
+    <script type="module">
+        //Firebase imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+      
+        //Our Firebase configuration/API key's
+        const firebaseConfig = {
+          apiKey: "AIzaSyCexe_k1nRmdwmAGOM7-a5Wo3S-zxQ-dSA",
+          authDomain: "novaeatz-187ef.firebaseapp.com",
+          projectId: "novaeatz-187ef",
+          storageBucket: "novaeatz-187ef.firebasestorage.app",
+          messagingSenderId: "240606168006",
+          appId: "1:240606168006:web:a3fdddc7a0c403b72028c7",
+          measurementId: "G-Y1K99JZ0XH"
+        };
+      
+        //Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+      
+        //Small helper to get input values
+        const val = (id) => document.getElementById(id).value;
+      
+        //Form submit handler, gets the input values and formats them, then adds the event to the database
+        document.getElementById('event-form').addEventListener('submit', async (e) => {  //
+          e.preventDefault(); //prevents from reloading the page 
+      
+          const eventName   = val('event-name');
+          const eventType   = val('event-type');
+          const description = val('description');
+          const eventDate   = val('event-date');
+          const startHour   = val('start-hour');
+          const startMinute = val('start-minute');
+          const startAmPm   = val('start-ampm');
+          const endHour     = val('end-hour');
+          const endMinute   = val('end-minute');
+          const endAmPm     = val('end-ampm');
+          const location    = val('location');
+      
+          const startTime = `${startHour}:${startMinute.padStart(2, '0')} ${startAmPm}`;
+          const endTime   = `${endHour}:${endMinute.padStart(2, '0')} ${endAmPm}`;
+      
+          const [campus, buildingRoom = ""] = location.split(',').map((s) => s.trim());
+          const parts = buildingRoom.split(' ');
+          const building = parts[0] || '';
+          const room     = parts.slice(1).join(' ') || '';
+      
+          try {
+            await addDoc(collection(db, 'events'), {
+              EVENTNAME: eventName,
+              CAMPUS: campus,
+              BUILDING: building,
+              ROOM: room,
+              DATE: eventDate,
+              STARTTIME: startTime,
+              ENDTIME: endTime,
+              DESCRIPTION: description,
+              FREEFOOD: eventType,
+              FLYERLINK: "",
+              ID: Date.now().toString()
+            });
+      
+            alert('Event added successfully!');
+            window.location.href = 'index.html';
+            document.getElementById('event-form').reset();
+          } catch (error) {
+            console.error('Error adding event:', error);
+            alert('Failed to add event. Please try again.');
+          }
         });
-    </script>
+      </script>      
 </body>
 </html>
 

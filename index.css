@@ -145,8 +145,8 @@ he min function picks the smaller value - so it will be 32 px until 5vw (a relat
 .card{
     background-color: #23272a;
     height: 360px;
-    width: 100%;
-    border-radius: .5rem;
+    width: 320px;
+    border-radius: 1rem; /*rounded corners*/
     border: 2px solid #1d1f21;
 }
 .card-header{
