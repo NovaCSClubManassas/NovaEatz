@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="effects.css">
-    <link rel="stylesheet" href="add-event.css">
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/effects.css">
+    <link rel="stylesheet" href="styles/add-event.css">
     <!--Zilla Slab and Inter Fonts-->
     <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -82,29 +82,10 @@
         </form>
     </div>
     
-    <script src="effects.js"></script>
+    <script src="scripts/effects.js"></script>
     <script type="module">
-        //Firebase imports
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-      
-        //Our Firebase configuration/API key's
-        const firebaseConfig = {
-          apiKey: "AIzaSyCexe_k1nRmdwmAGOM7-a5Wo3S-zxQ-dSA",
-          authDomain: "novaeatz-187ef.firebaseapp.com",
-          projectId: "novaeatz-187ef",
-          storageBucket: "novaeatz-187ef.firebasestorage.app",
-          messagingSenderId: "240606168006",
-          appId: "1:240606168006:web:a3fdddc7a0c403b72028c7",
-          measurementId: "G-Y1K99JZ0XH"
-        };
-      
-        //Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const db = getFirestore(app);
-      
+        import {db, analytics, getDocs, collection, addDoc} from "./scripts/firebase.js";
+        
         //Small helper to get input values
         const val = (id) => document.getElementById(id).value;
       
@@ -158,4 +139,3 @@
       </script>      
 </body>
 </html>
-

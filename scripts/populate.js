@@ -1,3 +1,4 @@
+
 /// initial calls
 // Call the function to make the API request
 PopulateCards()
@@ -188,3 +189,5 @@ function to24Hour(timeStr) {
   return `${String(hours).padStart(2, "0")}:${minutes}`;
 }
 
+//exporting function to test
+export { to24Hour, makeDate };

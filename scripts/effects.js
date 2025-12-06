@@ -1,3 +1,4 @@
+
 let message = "🍔🌭🍟NovaEatz🍔🌭🍟";
 document.addEventListener("DOMContentLoaded", () => {
   greetingtagupdate();
