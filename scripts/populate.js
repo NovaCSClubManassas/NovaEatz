@@ -1,6 +1,7 @@
 import { db, getDocs, collection, query, where, orderBy } from "./firebase.js";
 import { makeDate} from "./time-format.js";
-
+import {devMode} from "../utilities/devmode.js"
+import {loadAndTransformPuppetJson} from "./puppet-json.js"
 // Waiting until everything is defined to call PopulateCards()
 document.addEventListener("DOMContentLoaded", () => {
   PopulateCards();
@@ -14,7 +15,8 @@ function getTodaystart(){
 }
 
 async function fetchAPI() {
-  try {
+  if (devMode == false){
+    try {
     const minDate = getTodaystart();
     const eventsreference = collection(db, "events");
     // sort out all the events that are earlier than todays date and make sure they are in ascending order
@@ -32,6 +34,12 @@ async function fetchAPI() {
     console.error("Error fetching data:", error);
     throw error;
   }
+  } else
+  {
+    const response = await loadAndTransformPuppetJson();
+    console.log(response);
+    return response;
+  } 
 }
 
 /// template card generation
@@ -122,11 +130,11 @@ function GetEventStatus(start, end,strStart,strEnd) {
 
   // Happening NOW and warning if event is closing in 30 minutes
   if (nowTs >= startTs && nowTs <= endTs) {
-    const timeLeft = (endTs - nowTs)/(60 * 1000);
+    const timeLeft = Math.ceil((endTs - nowTs)/(60 * 1000));
     const closingSoon = timeLeft <= 45;
 
     if (closingSoon) {
-      return { status: "endingsoon", time: timeLeft, color: "green", blink:true, label: "Ending soon in", blink: true };
+      return { status: "endingsoon", color: "green", blink:true, label: `Ending soon in ${timeLeft} minutes (today from ${strStart} to ${strEnd})`};
     }
 
     return { status: "now", color: "green", blink:false, label: `Happening now (today from ${strStart} to ${strEnd})` };
