@@ -1,0 +1,137 @@
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: translate(-10px);
+        filter: blur(3px)
+    }
+
+    55% {
+        filter: blur(0)
+    }
+
+    to {
+        transform: translate(0);
+        opacity: 1;
+        filter: blur(0)
+    }
+}
+
+.fade-in{
+    opacity: 0;
+    animation: fade-in .7s cubic-bezier(.08,.67,.64,1.01) .1s forwards
+}
+
+
+
+/* Effect */
+.blink{
+    animation: blinking 1s infinite;
+}
+
+@keyframes blinking {
+    0% {
+        opacity: 0
+    }
+
+    50% {
+        opacity: 1
+    }
+
+    75% {
+        opacity: 1
+    }
+
+    to {
+        opacity: 0
+    }
+}
+/* .card:hover{
+    animation: glow-animation 1.5s ease 0s infinite;
+} */
+
+@keyframes glow-animation {
+    0% {
+        box-shadow: 0 0 5px green
+    }
+
+    50% {
+        box-shadow: 0 0 20px green
+    }
+
+    to {
+        box-shadow: 0 0 5px green
+    }
+}
+
+.slide-in{
+    animation: slide-in 1.2s forwards;
+}
+
+@keyframes slide-in {
+    0% {
+        opacity: 0;
+        transform: translate(-10px);
+        --right-cutoff: 0%;
+        --reveal:0;
+    }
+
+    20% {
+        opacity: 1
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(0);
+        --right-cutoff: 100%;
+        --reveal:100;
+    }
+}
+
+
+@property --reveal {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+.RevealText {
+  display: inline-block;
+  opacity: 0;
+
+  /* Animation */
+  animation: slide-in 1.2s forwards;
+  animation-timing-function: cubic-bezier(.04,.34,.5,1.02);
+  animation-delay: .1s;
+
+  /* Mask reveal */
+  --reveal: 0;
+  -webkit-mask: linear-gradient(
+    to right,
+    black calc(var(--reveal) * 1%),
+    transparent calc((var(--reveal) * 1%) + 10%)
+  );
+  mask: linear-gradient(
+    to right,
+    black calc(var(--reveal) * 1%),
+    transparent calc((var(--reveal) * 1%) + 10%)
+  );
+}
+
+@keyframes slide-reveal {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+    --reveal: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    --reveal: 100;
+  }
+}
+
