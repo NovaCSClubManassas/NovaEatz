@@ -38,8 +38,10 @@ const greetingtag =
 
 function greetingtagupdate(){
   randomtag = getRandomItem(greetingtag);
-  document.getElementById("greetingtag").textContent = randomtag;
-  console.log(randomtag);
+  if (document.getElementById("greetingtag")){
+    document.getElementById("greetingtag").textContent = randomtag;
+    console.log(randomtag);
+  }
 }
 
 document.addEventListener('click', e => {

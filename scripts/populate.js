@@ -1,20 +1,35 @@
-/// initial calls
-// Call the function to make the API request
-PopulateCards()
+import { db, getDocs, collection, query, where, orderBy } from "./firebase.js";
+import { makeDate} from "./time-format.js";
+
+// Waiting until everything is defined to call PopulateCards()
+document.addEventListener("DOMContentLoaded", () => {
+  PopulateCards();
+});
+
+function getTodaystart(){
+  const now = new Date();
+  //This gets today at 0:00
+  const startDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+  return startDay
+}
 
 async function fetchAPI() {
   try {
-    const response = await fetch('puppet.json'); // Replace with your backend URL/endpoint
+    const minDate = getTodaystart();
+    const eventsreference = collection(db, "events");
+    // sort out all the events that are earlier than todays date and make sure they are in ascending order
+    const q = query(
+      eventsreference,
+      where("FIREBASETIME", ">=", minDate),
+      orderBy("FIREBASETIME", "asc")
+    );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    const querySnapshot = await getDocs(q);
+  
+    return querySnapshot.docs.map(doc => doc.data());
 
-    const dbresponse = await response.json();
-    //console.log('Data from backend:', dbresponse)
-    return dbresponse;
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.error("Error fetching data:", error);
     throw error;
   }
 }
@@ -164,29 +179,5 @@ function FormatEventStatus(clone, status){
   if (status.blink == true){
     clone.getElementById("avatar").classList.add("blink");
   }
-}
-
-
-// Takes the event data and event time and turns it into a JavaScript Date 
-function makeDate(dateStr, timeStr) {
-  //InputOutput:
-  //console.log ("makeDate" + " Input date: " + dateStr + " Input time: " + timeStr + " Output: " + new Date(`${dateStr}T${to24Hour(timeStr)}`))
-  
-  return new Date(`${dateStr}T${to24Hour(timeStr)}`);
-}
-
-// Converts time to 24 hours
-function to24Hour(timeStr) {
-  const [time, modifier] = timeStr.split(" ");
-  let [hours, minutes] = time.split(":");
-
-  hours = parseInt(hours, 10);
-
-  if (modifier === "PM" && hours !== 12) hours += 12;
-  if (modifier === "AM" && hours === 12) hours = 0;
-  // InputOutput: 
-  // console.log("to24Hour" + " Input:" + timeStr + " Output: " + `${String(hours).padStart(2, "0")}:${minutes}`)
-
-  return `${String(hours).padStart(2, "0")}:${minutes}`;
 }
 

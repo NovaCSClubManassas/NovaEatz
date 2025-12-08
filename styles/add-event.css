@@ -1,0 +1,265 @@
+.form-header {
+    position: relative;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    min-height: 40px;
+}
+
+.back-link {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color:#8d979f;
+    font-size: 14px;
+    font-family: Inter, sans-serif;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.back-link:hover {
+    color: #ffffff;
+}
+
+
+
+
+
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 3rem 1rem;
+}
+
+
+
+.form-header h2 {
+    font-family: "Zilla Slab", Inter, -apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    font-family: Inter, -apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: #23272a;
+    border: 2px solid #1d1f21;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    font-family: Inter, -apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #4a5568;
+}
+
+.form-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: #23272a;
+    border: 2px solid #1d1f21;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    font-family: Inter, -apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size: 16px;
+    resize: vertical;
+    min-height: 100px;
+    box-sizing: border-box;
+}
+
+.form-textarea:focus {
+    outline: none;
+    border-color: #4a5568;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 14px 20px;
+    background-color: #23272a;
+    border: 2px solid #1d1f21;
+    border-radius: 1rem;
+    color: #ffffff;
+    font-family: Inter, -apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.submit-button:hover {
+    background-color: #2a2f33;
+}
+
+.submit-button:active {
+    background-color: #1d1f21;
+}
+
+/* Date and Time Picker Styles */
+.datetime-container {
+    display: grid;
+    grid-template-columns: .5fr 1fr 1fr;
+    gap: 1rem;
+}
+/* THIS IS NEW  */
+.location-container {
+    display: grid;
+    grid-template-columns: .5fr 1fr;
+    gap: 1rem;
+}
+.buildingroom-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.date-time-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.date-time-group label {
+    font-family: Inter, -apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.date-input {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: #23272a;
+    border: 2px solid #1d1f21;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    font-family: Inter, -apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+.date-input::-webkit-inner-spin-button,
+.date-input::-webkit-clear-button {
+    display: none;
+    -webkit-appearance: none;
+}
+
+.date-input:focus {
+    outline: none;
+    border-color: #4a5568;
+}
+
+.time-input {
+    width: 100%;
+    text-align: center;
+    padding: 12px 8px;
+    background-color: #23272a;
+    border: 2px solid #1d1f21;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    font-family: Inter, -apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+    appearance: textfield;
+    -moz-appearance: textfield;
+    min-width: 60px;
+}
+
+.time-input::-webkit-outer-spin-button,
+.time-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.time-input:focus {
+    outline: none;
+    border-color: #4a5568;
+}
+
+.time-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.time-separator {
+    color: #ffffff;
+    font-family: Inter, -apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.ampm-select {
+    /* addded new svg  */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4.95 10'><polygon fill='%23fff' points='1.41 4.67 2.48 3.18 3.54 4.67 1.41 4.67'/><polygon fill='%23fff' points='3.54 5.33 2.48 6.82 1.41 5.33 3.54 5.33'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.05rem center;
+    appearance: none; /*gets rid of the down arrow icon*/
+
+    padding: 12px 8px;
+    background-color: #23272a;
+    border: 2px solid #1d1f21;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    font-family: Inter, -apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+    cursor: pointer;
+    flex-shrink: 0;
+    min-width: 60px;
+} 
+
+.ampm-select:focus {
+    outline: none;
+    border-color: #4a5568;
+}
+
+.ampm-select option {
+    background-color: #23272a;
+    color: #ffffff;
+}
+
+@media screen and (min-width: 800px) {
+    .form-container {
+        padding: 4.5rem 3rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .datetime-container {
+        grid-template-columns: 1fr;
+    }
+    .location-container{
+        grid-template-columns: 1fr;
+    }
+    .time-container {
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
