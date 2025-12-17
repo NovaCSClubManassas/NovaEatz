@@ -79,6 +79,17 @@ he min function picks the smaller value - so it will be 32 px until 5vw (a relat
     width: fit-content;
 }
 
+.hero-subtext{
+    font-family: Inter, -apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    color: #C8C8C8;
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 0.75rem;
+    margin-bottom: 1.5rem;
+    max-width: 600px;
+    line-height: 1.5;
+}
+
 .event-post{
     display: flex;
     border: 1px solid transparent;
