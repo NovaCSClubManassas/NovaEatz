@@ -43,8 +43,15 @@
     } 
 }
 
+html {
+    height: 100%;
+}
+
 body{
     background-color: hsl(214, 7%, 19%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 h3{
@@ -62,6 +69,7 @@ h3{
     padding-bottom: 48px;
     position: relative;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .action-font{
@@ -151,6 +159,7 @@ he min function picks the smaller value - so it will be 32 px until 5vw (a relat
     grid-gap: 1rem;
     position: relative;
     align-items: center;
+    flex-grow: 1;
 }
 
 .card{
