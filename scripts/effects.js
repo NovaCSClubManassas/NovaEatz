@@ -45,6 +45,9 @@ function greetingtagupdate(){
 }
 
 document.addEventListener('click', e => {
+   // This disables clicking on any of the following input types: input, textarea, select, button, a
+    if (e.target.closest('input, textarea, select, button, a')) return;
+    
     const heart = document.createElement('div');
     heart.textContent = getRandomItem(emojis);
     heart.className = 'ClickBurger noselect';
