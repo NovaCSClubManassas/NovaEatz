@@ -44,6 +44,9 @@
 }
 
 body{
+    /* touch-action: manipulation disables certain features such as the double tap to zoom on mobile */
+    touch-action: manipulation;
+    
     background-color: hsl(214, 7%, 19%);
 }
 
