@@ -19,7 +19,7 @@
         </div>
 
 
-        <form id="event-form" class="fade-in">
+        <form id="event-form" class="fade-in" novalidate>
             <div class="form-group">
                 <label for="event-name" class="form-label">Event Name</label>
                 <input type="text" id="event-name" name="event-name" class="form-input" required>
@@ -66,7 +66,7 @@
                     <div class="location-container">
                         <div class="date-time-group">
                             <label for="event-date" class="form-label">Campus</label>
-                                <select id="campus" class = "ampm-select" >
+                                <select id="campus" class = "ampm-select" required>
                                     <option value="" disabled selected hidden>Select</option>
                                     <option value = "Manassas">Manassas</option>
                                     <option value="Annadale">Annadale</option>

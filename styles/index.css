@@ -48,6 +48,7 @@ html {
 }
 
 body{
+    margin: 0;
     background-color: hsl(214, 7%, 19%);
     min-height: 100vh;
     display: flex;
@@ -134,7 +135,7 @@ he min function picks the smaller value - so it will be 32 px until 5vw (a relat
     height: 47px;
     border-radius: 1rem;
     border: 1px solid transparent;
-
+    transition: border-color 0.2s ease;
 }
 
 .select-box {
@@ -149,6 +150,26 @@ he min function picks the smaller value - so it will be 32 px until 5vw (a relat
     width: 100%;
     background-color: #23272a;
     border-radius: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.select-box:hover {
+    background-color: #2a2f33;
+}
+
+.select-box:focus {
+    outline: none;
+    background-color: #2a2f33;
+}
+
+.select-container:focus-within {
+    border-color: #4a5568;
+}
+
+.select-box:focus-visible {
+    outline: 2px solid #4a5568;
+    outline-offset: 2px;
 } 
 
 /* end of header  */
@@ -160,6 +181,7 @@ he min function picks the smaller value - so it will be 32 px until 5vw (a relat
     position: relative;
     align-items: center;
     flex-grow: 1;
+    padding-bottom: 3rem; /* Spacing between cards and footer */
 }
 
 .card{
