@@ -263,3 +263,16 @@
 
 }
 
+/* Word count text shown under form inputs */
+.word-count {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 12px;
+  color: #8d979f;
+}
+
+/* Turns red when word limit is exceeded */
+.word-count.over {
+  color: #ff6b6b;
+}
+

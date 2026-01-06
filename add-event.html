@@ -3,6 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title shown in browser tab -->
+    <title>Add Event | NovaEatz</title>
+    <!-- Short description for Google -->
+    <meta name="description"
+        content="Add a new campus event and free food details so other NOVA students can find it.">
+    <!-- Tells Google the official page URL -->
+    <link rel="canonical" href="https://novacsclubmanassas.github.io/NovaEatz/add-event.html">
+    <!-- Allows search engines to index the page -->
+    <meta name="robots" content="index, follow">
     <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="styles/effects.css">
     <link rel="stylesheet" href="styles/add-event.css">
@@ -22,11 +31,13 @@
             <div class="form-group">
                 <label for="event-name" class="form-label">Event Name</label>
                 <input type="text" id="event-name" name="event-name" class="form-input" required>
+                <small id="event-name-count" class="word-count"></small>
             </div>
             
             <div class="form-group">
                 <label for="description" class="form-label">Event Description</label>
                 <textarea id="description" name="description" class="form-textarea" required></textarea>
+                <small id="description-count" class="word-count"></small>
             </div>
             <div class = "form-group">    
                 <div class="datetime-container">
