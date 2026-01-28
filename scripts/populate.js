@@ -46,42 +46,142 @@ async function fetchAPI() {
 const card = document.getElementById("cardtemplate")
 const cardgrid = document.getElementById("cardgrid")
 
+// Store all events for filtering (full dataset)
+// Filtering is applied in memory without refetching from network
+let allEvents = [];
+
+// Empty state message element (created once, reused)
+let emptyStateElement = null;
+
+/**
+ * Creates a card element from an event object
+ * Returns the card element or null if event should be skipped
+ */
+async function createCardFromEvent(event) {
+  // instantiate clone
+  const clone = card.content.cloneNode(true);
+
+  // changing the names of elements
+  clone.getElementById("eventname").textContent = event.EVENTNAME;
+  clone.getElementById("location").textContent = `${event.CAMPUS} Campus, ${event.BUILDING} ${event.ROOM}`;
+  clone.getElementById("description").textContent = event.DESCRIPTION;
+  clone.getElementById("freefood").textContent = event.FREEFOOD;
+  
+  const start = makeDate(event.DATE, event.STARTTIME);
+  const end = makeDate(event.DATE, event.ENDTIME);
+
+  try {
+    const status = await GetEventStatus(start, end, event.STARTTIME, event.ENDTIME);
+    console.log(status)
+    if (status.status === "past") {
+      console.log("Skipping past event");
+      return null; // Skip past events
+    }
+    await FormatEventStatus(clone, status)
+  } catch (error) {
+    console.log('Event status error', error.message);
+  }
+
+  return clone;
+}
+
+/**
+ * Renders events to the card grid
+ * @param {Array} eventsToRender - Array of event objects to render
+ */
+async function renderEvents(eventsToRender) {
+  // Clear existing cards
+  cardgrid.innerHTML = '';
+
+  // Remove empty state if it exists
+  if (emptyStateElement) {
+    emptyStateElement.remove();
+    emptyStateElement = null;
+  }
+
+  if (eventsToRender.length === 0) {
+    // Show empty state message
+    emptyStateElement = document.createElement('div');
+    emptyStateElement.className = 'empty-state';
+    emptyStateElement.textContent = 'No events found for this campus.';
+    emptyStateElement.style.cssText = 'text-align: center; color: #8d979f; font-family: Inter, sans-serif; font-size: 16px; padding: 2rem; grid-column: 1 / -1;';
+    cardgrid.appendChild(emptyStateElement);
+    return;
+  }
+
+  // Render each event
+  for (const event of eventsToRender) {
+    const cardElement = await createCardFromEvent(event);
+    if (cardElement) {
+      cardgrid.appendChild(cardElement);
+    }
+  }
+}
+
+/**
+ * Filters events by campus (case-insensitive)
+ * @param {string} selectedCampus - Campus value to filter by, empty string shows all
+ * @returns {Array} Filtered array of events
+ */
+function filterEventsByCampus(selectedCampus) {
+  if (!selectedCampus || selectedCampus.trim() === '') {
+    return allEvents; // Show all events
+  }
+
+  // Case-insensitive filtering
+  return allEvents.filter(event => {
+    const eventCampus = (event.CAMPUS || '').trim();
+    return eventCampus.toLowerCase() === selectedCampus.toLowerCase();
+  });
+}
+
+/**
+ * Sets up campus filter event listener
+ * To add a new campus option: add it to the select dropdown in index.html
+ */
+function setupCampusFilter() {
+  const campusFilter = document.getElementById('campus-filter');
+  if (!campusFilter) {
+    console.warn('Campus filter select not found');
+    return;
+  }
+
+  campusFilter.addEventListener('change', async (e) => {
+    const selectedCampus = e.target.value;
+    const filteredEvents = filterEventsByCampus(selectedCampus);
+    await renderEvents(filteredEvents);
+    // Blur the select to remove focus outline after selection
+    e.target.blur();
+  });
+}
+
 async function PopulateCards(){
     try{
        const data = await fetchAPI();
        //console.log('Processing the received data:', data);
 
-       /// loop through each json entry
+       // Process all events and filter out past events
+       // Store non-past events in allEvents for filtering
+       allEvents = [];
        for (const event of data) {
-
-        // instantiate clone
-        const clone = card.content.cloneNode(true);
-
-       // changing the names of elements
-       clone.getElementById("eventname").textContent = event.EVENTNAME;
-       clone.getElementById("location").textContent = `${event.CAMPUS} Campus, ${event.BUILDING} ${event.ROOM}`;
-       clone.getElementById("description").textContent = event.DESCRIPTION;
-       clone.getElementById("freefood").textContent = event.FREEFOOD;
-       
-       const start = makeDate(event.DATE, event.STARTTIME);
-        const end = makeDate(event.DATE, event.ENDTIME);
-
-       try{
-        const status = await GetEventStatus(start,end,event.STARTTIME,event.ENDTIME);
-        console.log(status)
-        if (status.status === "past") {
-          console.log("Skipping past event");
-          continue;
-        }
-        await FormatEventStatus(clone, status)
-
-       }catch(error){
-        console.log('Event status error', error.message);
+         const start = makeDate(event.DATE, event.STARTTIME);
+         const end = makeDate(event.DATE, event.ENDTIME);
+         try {
+           const status = await GetEventStatus(start, end, event.STARTTIME, event.ENDTIME);
+           if (status.status !== "past") {
+             allEvents.push(event);
+           }
+         } catch (error) {
+           // Include event if status check fails
+           allEvents.push(event);
+         }
        }
-      
-       // Add clone to html
-       cardgrid.appendChild(clone);
-       };
+
+       // Render all events initially (default: "All Campuses")
+       await renderEvents(allEvents);
+
+       // Set up campus filter
+       setupCampusFilter();
     } catch (error) {
     console.log('Handling error in the main flow:', error.message);
     }
