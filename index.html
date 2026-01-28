@@ -11,7 +11,7 @@
 	<!-- Tells Google the official page URL -->
 	<link rel="canonical" href="https://novacsclubmanassas.github.io/NovaEatz/index.html">
 	<!-- Allows search engines to index the page -->
-	<meta name="robots" content="index, follow"
+	<meta name="robots" content="index, follow">
     <link rel="stylesheet" href="styles/index.css">
 	<link rel="stylesheet" href="styles/effects.css">
 	<link rel="stylesheet" href="styles/footer.css">
@@ -26,10 +26,7 @@
 			<h3 id = "greetingtag" class = "RevealText">Free Food Galore!</h3>
 			<p class="hero-subtext RevealText">Discover exciting NOVA events with free food across NOVA's campuses, updated by students and organizations.</p>
 		 </div>
-		 <div class = "select-container fade-in">
-			<a href="add-event.html" class = "event-button action-font" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">Add Event</a>
-		 </div>
-		 <div class = "select-container fade-in">
+		 <div class = "select-container fade-in campus-filter-container">
 			<select id="campus-filter" class="select-box action-font">
 		<!-- This is where the campuses are shown-->
 				<option value="">All Campuses</option>
@@ -40,6 +37,9 @@
 				<option value ="Woodbridge">Woodbridge Campus</option>
 				<option value = "Medical Education Campus">Medical Education Campus</option>
 			</select>
+		 </div>
+		 <div class = "select-container fade-in add-event-container">
+			<a href="add-event.html" class = "event-button action-font" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">Add Event</a>
 		 </div>
 	</header>
 	<!--Below is the event grid -->
@@ -63,7 +63,6 @@
 				<h9 id = "freefood">Free Food: Pizza 🍕, Ice Cream 🍦, and other snacks!</h9>
 			</div>
 		</div>
-    </div>
 </template>
 </body>	
 <script type="module" src="scripts/firebase.js"></script>
