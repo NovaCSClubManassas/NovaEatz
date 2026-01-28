@@ -14,6 +14,7 @@
 	<meta name="robots" content="index, follow"
     <link rel="stylesheet" href="styles/index.css">
 	<link rel="stylesheet" href="styles/effects.css">
+	<link rel="stylesheet" href="styles/footer.css">
 	<!--Zilla Slab and Inter Fonts-->
 	<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;800&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -23,14 +24,15 @@
 		 <div class = "greeting-banner">
 			<!--This is to have a scroll effect and is auto populated-->
 			<h3 id = "greetingtag" class = "RevealText">Free Food Galore!</h3>
+			<p class="hero-subtext RevealText">Discover exciting NOVA events with free food across NOVA's campuses, updated by students and organizations.</p>
 		 </div>
 		 <div class = "select-container fade-in">
 			<a href="add-event.html" class = "event-button action-font" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">Add Event</a>
 		 </div>
 		 <div class = "select-container fade-in">
-			<select class="select-box action-font">
+			<select id="campus-filter" class="select-box action-font">
 		<!-- This is where the campuses are shown-->
-				<option value="" label="Filter by Campus"></option>
+				<option value="">All Campuses</option>
 				<option value = "Manassas">Manassas Campus</option>
 				<option value="Annadale">Annadale Campus</option>
 				<option value="Alexandria">Alexandria Campus</option>
@@ -67,5 +69,6 @@
 <script type="module" src="scripts/firebase.js"></script>
 <script src="scripts/effects.js"></script>
 <script type="module" src="scripts/populate.js"></script>
+<script src="scripts/layout.js" defer></script>
 </html>
 
