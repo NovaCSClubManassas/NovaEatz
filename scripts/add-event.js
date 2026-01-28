@@ -3,6 +3,79 @@ import { makeDate,to24Hour } from "./time-format.js";
 //Small helper to get input values
 const val = (id) => document.getElementById(id).value;
 
+const MAX_NAME_WORDS = 10;     // Max words for event name
+const MAX_DESC_WORDS = 40;     // Max words for description
+
+// Counts how many words are in a string
+// Extra spaces are ignored
+const countWords = (text) =>
+  text.trim().length === 0 ? 0 : text.trim().split(/\s+/).length;
+
+// Updates the word counter text under an input
+// Turns red if the limit is exceeded
+const setCounter = (inputEl, counterEl, maxWords) => {
+  if (!inputEl || !counterEl) return;
+
+  const words = countWords(inputEl.value);
+  counterEl.textContent = `${words}/${maxWords} words`;
+
+  // Add red warning style if over limit
+  counterEl.classList.toggle("over", words > maxWords);
+};
+
+
+// LIVE WORD COUNTERS
+// Runs when the page loads
+
+document.addEventListener("DOMContentLoaded", () => {
+  const nameInput = document.getElementById("event-name");
+  const descInput = document.getElementById("description");
+
+  const nameCounter = document.getElementById("event-name-count");
+  const descCounter = document.getElementById("description-count");
+
+  // Show initial word counts
+  setCounter(nameInput, nameCounter, MAX_NAME_WORDS);
+  setCounter(descInput, descCounter, MAX_DESC_WORDS);
+
+  // Update counters as the user types
+  nameInput.addEventListener("input", () =>
+    setCounter(nameInput, nameCounter, MAX_NAME_WORDS)
+  );
+
+  descInput.addEventListener("input", () =>
+    setCounter(descInput, descCounter, MAX_DESC_WORDS)
+  );
+});
+
+
+// FORM SUBMISSION HANDLER
+
+document.getElementById('event-form').addEventListener('submit', async (e) => {
+  e.preventDefault(); // Stop page from refreshing
+
+  // Get values from the form
+  const eventName = val('event-name');
+  const freefood = val('free-food');
+  const description = val('description');
+
+  
+  // WORD LIMIT VALIDATION
+  // Stop submission if limits exceeded
+  if (countWords(eventName) > MAX_NAME_WORDS) {
+    alert(`Event name is too long (max ${MAX_NAME_WORDS} words).`);
+    return;
+  }
+
+  if (countWords(description) > MAX_DESC_WORDS) {
+    alert(`Event description is too long (max ${MAX_DESC_WORDS} words).`);
+    return;
+  }
+
+
+});
+
+
 // Custom validation UI functions
 // To add new required fields: add the 'required' attribute in HTML, validation auto-detects it
 

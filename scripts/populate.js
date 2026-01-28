@@ -2,6 +2,19 @@ import { db, getDocs, collection, query, where, orderBy } from "./firebase.js";
 import { makeDate} from "./time-format.js";
 import {devMode} from "../utilities/devmode.js"
 import {loadAndTransformPuppetJson} from "./puppet-json.js"
+
+// These control how much text shows on each card
+
+const CARD_TITLE_MAX_WORDS = 10;
+const CARD_DESC_MAX_WORDS = 40;
+
+// Shortens text to a word limit
+// Adds "..." if text is cut off
+const truncateByWords = (text, maxWords) => {
+  const words = String(text || "").trim().split(/\s+/).filter(Boolean);
+  if (words.length <= maxWords) return text;
+  return words.slice(0, maxWords).join(" ") + "…";
+};
 // Waiting until everything is defined to call PopulateCards()
 document.addEventListener("DOMContentLoaded", () => {
   PopulateCards();
@@ -164,6 +177,42 @@ async function PopulateCards(){
        // Store non-past events in allEvents for filtering
        allEvents = [];
        for (const event of data) {
+
+        // instantiate clone
+        const clone = card.content.cloneNode(true);
+
+       // changing the names of elements
+       
+       clone.getElementById("location").textContent = `${event.CAMPUS} Campus, ${event.BUILDING} ${event.ROOM}`;
+       clone.getElementById("freefood").textContent = event.FREEFOOD;
+       // Save full text versions
+       const fullTitle = event.EVENTNAME ?? "";
+       const fullDesc = event.DESCRIPTION ?? "";
+
+       // Show shortened text on the card
+       clone.getElementById("eventname").textContent =
+         truncateByWords(fullTitle, CARD_TITLE_MAX_WORDS);
+
+       clone.getElementById("description").textContent =
+         truncateByWords(fullDesc, CARD_DESC_MAX_WORDS);
+
+       // Show full text when hovering
+       clone.getElementById("eventname").title = fullTitle;
+       clone.getElementById("description").title = fullDesc;
+       const start = makeDate(event.DATE, event.STARTTIME);
+        const end = makeDate(event.DATE, event.ENDTIME);
+
+       try{
+        const status = await GetEventStatus(start,end,event.STARTTIME,event.ENDTIME);
+        console.log(status)
+        if (status.status === "past") {
+          console.log("Skipping past event");
+          continue;
+        }
+        await FormatEventStatus(clone, status)
+
+       }catch(error){
+        console.log('Event status error', error.message);
          const start = makeDate(event.DATE, event.STARTTIME);
          const end = makeDate(event.DATE, event.ENDTIME);
          try {
