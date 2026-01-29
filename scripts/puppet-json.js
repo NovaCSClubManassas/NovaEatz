@@ -14,7 +14,7 @@
 export async function loadAndTransformPuppetJson() {
   try {
     // this calls the puppet.json
-    const response = await fetch("scripts/puppet.json");
+    const response = await fetch("./scripts/puppet.json");
     const events = await response.json();
     const now = new Date();
 

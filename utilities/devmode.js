@@ -4,4 +4,4 @@
 // it will have populate.js call puppet-json.js 
 // instead of the firebase api
 // ##################################
-export const devMode = true;
+export const devMode = false;

@@ -32,7 +32,7 @@ async function loadComponent(componentPath, selector, injectCallback) {
 // Initializes all shared layout components
 function initLayout() {
     // Load footer component
-    loadComponent('components/footer.html', 'footer', (footer) => {
+    loadComponent('./components/footer.html', 'footer', (footer) => {
         document.body.appendChild(footer);
     });
 }

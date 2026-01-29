@@ -349,7 +349,7 @@ form.addEventListener('submit', async (e) => {  //
     });
 
     alert('Event added successfully!');
-    window.location.href = 'index.html';
+    window.location.href = './index.html';
     document.getElementById('event-form').reset();
   } catch (error) {
     console.error('Error adding event:', error);
