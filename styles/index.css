@@ -6,9 +6,26 @@
 /*LargeView*/
 @media screen and (min-width: 800px) { 
     .header-grid{
-        align-items: center;
-        grid-template-columns: 1fr 200px; /*This is for grid spacing*/
+        align-items: start;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
         padding: 4.5rem 3rem 0;
+    }
+    .greeting-banner{
+        grid-column: 1;
+        grid-row: 1;
+    }
+    .campus-filter-container{
+        grid-column: 1;
+        grid-row: 2;
+        margin-top: 1rem;
+    }
+    .add-event-container{
+        grid-column: 2;
+        grid-row: 1;
+        align-self: start;
+        max-width: 200px;
+        width: 200px;
     }
     .left-align{
         text-align: left;
@@ -69,7 +86,7 @@ h3{
     grid-gap: 1rem;
     padding-bottom: 48px;
     position: relative;
-    align-items: center;
+    align-items: start;
     flex-shrink: 0;
 }
 
@@ -86,6 +103,8 @@ he min function picks the smaller value - so it will be 32 px until 5vw (a relat
 .greeting-banner{
     font-size: min(32px,5vw);
     width: fit-content;
+    display: flex;
+    flex-direction: column;
 }
 
 .hero-subtext{
@@ -186,10 +205,16 @@ he min function picks the smaller value - so it will be 32 px until 5vw (a relat
 
 .card{
     background-color: #23272a;
-    height: 360px;
+    min-height: 360px;
+    height: auto;
     width: 100%;
     border-radius: .5rem;
     border: 2px solid #1d1f21;
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    display: flex;
+    flex-direction: column;
 }
 
 .card-header{
@@ -202,6 +227,9 @@ he min function picks the smaller value - so it will be 32 px until 5vw (a relat
 .card-header-text{
     padding: 13px 16px;
     display: flex;
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 h6{
@@ -211,6 +239,9 @@ h6{
     text-align: left;
     font-size: 16px;
     line-height: 26px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .card-avatar-container{
@@ -231,6 +262,10 @@ h6{
 .card-body{
     /* css handles it as top right/left bottom  */
     padding: 24px 16px 32px;
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    flex-grow: 1;
 }
 
 h7{
@@ -244,6 +279,9 @@ h7{
     padding: 0px;
     text-transform: capitalize;
     line-height: 24px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 h8{
     font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -253,7 +291,9 @@ h8{
     font-size: 14px;
     font-weight: 500;
     margin-top: 5px;
-
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 h9{
@@ -264,6 +304,9 @@ h9{
     line-height: 24px;
     color: white;
     margin-top: 16px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 /*This is for clicking effect*/

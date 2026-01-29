@@ -65,11 +65,11 @@ function to24Hour(timeStr) {
       const success = result === test.expected;
   
       if (success) {
-        console.log(`✅ PASS: ${test.name}`);
-        console.log(`   Input: "${test.input}" → Output: "${result}"\n`);
+        console.log(`PASS: ${test.name}`);
+        console.log(`   Input: "${test.input}" -> Output: "${result}"\n`);
         passed++;
       } else {
-        console.log(`❌ FAIL: ${test.name}`);
+        console.log(`FAIL: ${test.name}`);
         console.log(`   Input: "${test.input}"`);
         console.log(`   Expected: "${test.expected}"`);
         console.log(`   Got: "${result}"\n`);
@@ -77,9 +77,7 @@ function to24Hour(timeStr) {
       }
     });
   
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     console.log(`Results: ${passed} passed, ${failed} failed`);
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
   }
   
   // Run the tests

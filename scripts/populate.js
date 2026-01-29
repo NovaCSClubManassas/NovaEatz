@@ -11,7 +11,10 @@ const CARD_DESC_MAX_WORDS = 40;
 // Shortens text to a word limit
 // Adds "..." if text is cut off
 const truncateByWords = (text, maxWords) => {
-  const words = String(text || "").trim().split(/\s+/).filter(Boolean);
+  // Handle null/undefined by returning empty string
+  if (text == null) return "";
+  
+  const words = String(text).trim().split(/\s+/).filter(Boolean);
   if (words.length <= maxWords) return text;
   return words.slice(0, maxWords).join(" ") + "…";
 };
@@ -210,6 +213,8 @@ async function PopulateCards(){
           continue;
         }
         await FormatEventStatus(clone, status)
+        // Add event to allEvents if not past
+        allEvents.push(event);
 
        }catch(error){
         console.log('Event status error', error.message);
@@ -225,6 +230,7 @@ async function PopulateCards(){
            allEvents.push(event);
          }
        }
+       } // Close for loop
 
        // Render all events initially (default: "All Campuses")
        await renderEvents(allEvents);

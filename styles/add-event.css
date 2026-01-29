@@ -242,6 +242,7 @@
 }
 
 /* Validation Error Styles */
+/* Fields start with neutral border, only show error state when validation fails AND field has been touched */
 .field-error {
     border-color: #e53e3e !important;
     background-color: #2a1f1f !important;
@@ -249,16 +250,28 @@
 
 .field-error:focus {
     border-color: #e53e3e !important;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(229, 62, 62, 0.2);
 }
 
 .error-text {
-    display: block;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.375rem;
     color: #fc8181;
     font-family: Inter, -apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     font-size: 13px;
     font-weight: 400;
     margin-top: 0.375rem;
     line-height: 1.4;
+}
+
+.error-icon {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
 }
 
 @media screen and (min-width: 800px) {
@@ -286,6 +299,7 @@
   margin-top: 0.35rem;
   font-size: 12px;
   color: #8d979f;
+  font-family: Inter, -apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 /* Turns red when word limit is exceeded */

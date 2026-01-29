@@ -60,63 +60,103 @@ document.getElementById('event-form').addEventListener('submit', async (e) => {
   const description = val('description');
 
   
-  // WORD LIMIT VALIDATION
-  // Stop submission if limits exceeded
-  if (countWords(eventName) > MAX_NAME_WORDS) {
-    alert(`Event name is too long (max ${MAX_NAME_WORDS} words).`);
-    return;
-  }
-
-  if (countWords(description) > MAX_DESC_WORDS) {
-    alert(`Event description is too long (max ${MAX_DESC_WORDS} words).`);
-    return;
-  }
-
-
+  // Word limit validation is now handled in validateField function
+  // No need for separate checks here
 });
 
 
+// Track which fields have been interacted with
+const touchedFields = new Set();
+
+// Mark a field as touched (user has interacted with it)
+function markFieldTouched(field) {
+  touchedFields.add(field.id || field.name);
+}
+
+// Check if a field has been touched
+function isFieldTouched(field) {
+  return touchedFields.has(field.id || field.name);
+}
+
 // Custom validation UI functions
-// To add new required fields: add the 'required' attribute in HTML, validation auto-detects it
+// Validation is handled entirely in JavaScript, not relying on HTML required attributes
 
 /**
- * Validates a single field and returns true if valid, false otherwise
+ * Validates a single field and returns { isValid: boolean, errorMessage: string }
  */
 function validateField(field) {
   const fieldType = field.tagName.toLowerCase();
   let isValid = true;
+  let errorMessage = '';
   let value = '';
 
   if (fieldType === 'input') {
     const inputType = field.type;
     if (inputType === 'checkbox') {
       isValid = field.checked;
+      if (!isValid) {
+        errorMessage = 'This field is required';
+      }
     } else {
       value = field.value.trim();
       isValid = value !== '';
+      if (!isValid) {
+        errorMessage = 'This field is required';
+      } else {
+        // Check word limits for event name
+        if (field.id === 'event-name') {
+          const wordCount = countWords(value);
+          if (wordCount > MAX_NAME_WORDS) {
+            isValid = false;
+            errorMessage = `Event name is too long (max ${MAX_NAME_WORDS} words)`;
+          }
+        }
+      }
     }
   } else if (fieldType === 'textarea') {
     value = field.value.trim();
     isValid = value !== '';
+    if (!isValid) {
+      errorMessage = 'This field is required';
+    } else {
+      // Check word limits for description
+      if (field.id === 'description') {
+        const wordCount = countWords(value);
+        if (wordCount > MAX_DESC_WORDS) {
+          isValid = false;
+          errorMessage = `Description is too long (max ${MAX_DESC_WORDS} words)`;
+        }
+      }
+    }
   } else if (fieldType === 'select') {
     value = field.value;
-    isValid = value !== '' && value !== null;
+    isValid = value !== '' && value !== null && value !== undefined;
+    if (!isValid) {
+      errorMessage = 'This field is required';
+    }
   }
 
-  return isValid;
+  return { isValid, errorMessage };
 }
 
 /**
  * Shows error UI for a field
  */
-function showFieldError(field) {
+function showFieldError(field, errorMessage = 'This field is required') {
+  // Only show error if field has been touched or we're validating on submit
+  if (!isFieldTouched(field) && !field.dataset.validating) {
+    return;
+  }
+
   field.classList.add('field-error');
   
   // Check if error message already exists for this field
   const fieldId = field.id || field.name;
   const existingError = document.querySelector(`.error-text[data-field-id="${fieldId}"]`);
   if (existingError) {
-    return; // Error already shown
+    // Update existing error message
+    existingError.innerHTML = `<span class="error-icon">⚠</span> ${errorMessage}`;
+    return;
   }
 
   // Find the appropriate container for error message placement
@@ -125,10 +165,10 @@ function showFieldError(field) {
   const dateTimeGroup = field.closest('.date-time-group');
   const targetContainer = timeContainer ? dateTimeGroup : (dateTimeGroup || field.parentElement);
 
-  // Create and insert error message
+  // Create and insert error message with warning icon
   const errorText = document.createElement('span');
   errorText.className = 'error-text';
-  errorText.textContent = 'This field is required';
+  errorText.innerHTML = `<span class="error-icon">⚠</span> ${errorMessage}`;
   errorText.setAttribute('data-field-id', fieldId);
   
   // Insert at the end of the target container
@@ -150,45 +190,106 @@ function clearFieldError(field) {
 }
 
 /**
+ * List of required field IDs (no longer relying on HTML required attribute)
+ */
+const REQUIRED_FIELDS = [
+  'event-name',
+  'description',
+  'event-date',
+  'start-hour',
+  'start-minute',
+  'start-ampm',
+  'end-hour',
+  'end-minute',
+  'end-ampm',
+  'campus',
+  'building',
+  'room',
+  'free-food'
+];
+
+/**
  * Validates all required fields in the form
  * Returns { isValid: boolean, firstInvalidField: HTMLElement | null }
  */
-function validateForm(form) {
-  const requiredFields = form.querySelectorAll('[required]');
+function validateForm(form, isSubmitAttempt = false) {
   let isValid = true;
   let firstInvalidField = null;
 
-  requiredFields.forEach(field => {
-    const fieldValid = validateField(field);
-    if (!fieldValid) {
+  // Mark all fields as validating on submit attempt
+  if (isSubmitAttempt) {
+    REQUIRED_FIELDS.forEach(fieldId => {
+      const field = document.getElementById(fieldId);
+      if (field) {
+        field.dataset.validating = 'true';
+        markFieldTouched(field); // Mark as touched on submit attempt
+      }
+    });
+  }
+
+  REQUIRED_FIELDS.forEach(fieldId => {
+    const field = document.getElementById(fieldId);
+    if (!field) return;
+
+    const validation = validateField(field);
+    if (!validation.isValid) {
       isValid = false;
       if (!firstInvalidField) {
         firstInvalidField = field;
       }
-      showFieldError(field);
+      showFieldError(field, validation.errorMessage);
     } else {
       clearFieldError(field);
     }
   });
 
+  // Clean up validating flags after validation
+  if (isSubmitAttempt) {
+    REQUIRED_FIELDS.forEach(fieldId => {
+      const field = document.getElementById(fieldId);
+      if (field) {
+        delete field.dataset.validating;
+      }
+    });
+  }
+
   return { isValid, firstInvalidField };
 }
 
-// Set up input/change listeners to clear errors as fields become valid
+// Set up input/change listeners to mark fields as touched and validate
 const form = document.getElementById('event-form');
-const requiredFields = form.querySelectorAll('[required]');
 
-requiredFields.forEach(field => {
-  // Clear error on input/change
+REQUIRED_FIELDS.forEach(fieldId => {
+  const field = document.getElementById(fieldId);
+  if (!field) return;
+
+  // Mark field as touched and validate on interaction
   field.addEventListener('input', () => {
-    if (validateField(field)) {
+    markFieldTouched(field);
+    const validation = validateField(field);
+    if (validation.isValid) {
       clearFieldError(field);
+    } else {
+      showFieldError(field, validation.errorMessage);
     }
   });
   
   field.addEventListener('change', () => {
-    if (validateField(field)) {
+    markFieldTouched(field);
+    const validation = validateField(field);
+    if (validation.isValid) {
       clearFieldError(field);
+    } else {
+      showFieldError(field, validation.errorMessage);
+    }
+  });
+
+  // Mark as touched on blur (when user leaves the field)
+  field.addEventListener('blur', () => {
+    markFieldTouched(field);
+    const validation = validateField(field);
+    if (!validation.isValid) {
+      showFieldError(field, validation.errorMessage);
     }
   });
 });
@@ -198,7 +299,8 @@ form.addEventListener('submit', async (e) => {  //
   e.preventDefault(); //prevents from reloading the page
 
   // Custom validation - block submission if form is invalid
-  const validation = validateForm(form);
+  // Pass isSubmitAttempt=true to show errors for all invalid fields
+  const validation = validateForm(form, true);
   if (!validation.isValid) {
     // Focus and scroll to first invalid field
     if (validation.firstInvalidField) {
@@ -247,7 +349,7 @@ form.addEventListener('submit', async (e) => {  //
     });
 
     alert('Event added successfully!');
-    window.location.href = 'index.html';
+    window.location.href = './index.html';
     document.getElementById('event-form').reset();
   } catch (error) {
     console.error('Error adding event:', error);
